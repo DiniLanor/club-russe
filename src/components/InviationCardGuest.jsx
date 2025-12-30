@@ -87,7 +87,7 @@ const InviationCardGuest = () => {
                             <div className="mb-6 text-center">
                                 <h2 className="text-xl font-bold text-gray-800 mb-2">Vous convie à sa soirée de Gala de Clôture Annuelle</h2>
                                 <p className="text-gray-600 text-sm italic">sous le thème:</p>
-                                <p className="text-gray-600 text-sm italic">"Élégance & Réussite - Le Spectacle Continue - Nuit Étoilée"</p>
+                                <p className="text-gray-600 text-sm italic">"Élégance & Réussite - Nuit Étoilée"</p>
                             </div>
 
                             {/* Message d'invitation */}
