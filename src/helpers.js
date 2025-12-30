@@ -1,10 +1,16 @@
-async function copierTexte(texte) {
+function copierTexte(texte) {
+    const textArea = document.createElement("textarea");
+    textArea.value = texte;
+    document.body.appendChild(textArea);
+    textArea.select(); // Sélectionne le texte
+
     try {
-        await navigator.clipboard.writeText(texte);
-        console.log('Texte copié avec succès !');
+        document.execCommand('copy'); // Exécute la commande de copie
+        alert('Lien copié avec success !');
     } catch (err) {
-        console.error('Échec de la copie : ', err);
+        console.error('Impossible de copier avec success : ', err);
     }
+    document.body.removeChild(textArea);
 }
 
 
