@@ -20,28 +20,23 @@ const Home = () => {
     const [filteredTickets, setFilteredTickets] = useState([]);
 
     // États pour les filtres et recherche
+    const [enteredCode, setEnteredCode] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [activeTab, setActiveTab] = useState('overview');
 
     // États pour la sidebar mobile
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isAuth, setIsAuth] = useState(false);
 
     // États pour les formulaires
     const [showAddUserModal, setShowAddUserModal] = useState(false);
     const [newUser, setNewUser] = useState({ fullName: '' });
 
 
-    const [isverif, setIsverif] = useState(false);
 
     // Données de démo (simulation API)
     useEffect(() => {
-
-        // const enteredCode = prompt("Merci de saisir le code");
-
-        // if (enteredCode === code) {
-        //     setIsverif(true);
-        // }
 
         const t = async () => {
             const response = await api.getData();
@@ -64,10 +59,18 @@ const Home = () => {
     const usedTickets = tickets.filter(ticket => ticket.used).length;
     const pendingTickets = totalTickets - usedTickets;
 
+    const verif = () => {
+        if(localStorage.getItem('key-invite') === code){
+            setIsAuth(true);
+        }
+    };
+
     // Gestion de la recherche et des filtres
     useEffect(() => {
         let filteredU = users;
         let filteredT = tickets;
+
+        verif();
 
         // Filtre par recherche
         if (searchTerm) {
@@ -124,62 +127,70 @@ const Home = () => {
         ));
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(enteredCode === code){
+            localStorage.setItem('key-invite', enteredCode);
+            setIsAuth(true);
+        }
+    };
 
-    return <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Sidebar pour mobile */}
-        {sidebarOpen && (
-            <div className="fixed inset-0 z-50 lg:hidden">
-                <div className="fixed inset-0 bg-black/50" onClick={() => setSidebarOpen(false)}></div>
-                <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl p-6">
-                    <div className="flex justify-between items-center mb-8">
-                        <h2 className="text-xl font-bold text-gray-800">Gestion Invitations</h2>
-                        <button onClick={() => setSidebarOpen(false)} className="p-1">
-                            <X size={24} />
-                        </button>
+    return isAuth
+        ? <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+            {/* Sidebar pour mobile */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="fixed inset-0 bg-black/50" onClick={() => setSidebarOpen(false)}></div>
+                    <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl p-6">
+                        <div className="flex justify-between items-center mb-8">
+                            <h2 className="text-xl font-bold text-gray-800">Gestion Invitations</h2>
+                            <button onClick={() => setSidebarOpen(false)} className="p-1">
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <nav className="space-y-2">
+                            <SidebarLinks activeTab={activeTab} tickets={tickets} users={users} setActiveTab={setActiveTab} />
+                        </nav>
+                    </div>
+                </div>
+            )}
+
+            <div className="flex">
+                {/* Sidebar (desktop) */}
+                <aside className="hidden lg:block w-64 bg-white shadow-lg min-h-screen p-6">
+                    <div className="mb-8">
+                        <h2 className="text-2xl font-bold text-gray-800">Gestion Invitations</h2>
+                        <p className="text-gray-600 text-sm">Soirée de Gala 2026</p>
                     </div>
                     <nav className="space-y-2">
                         <SidebarLinks activeTab={activeTab} tickets={tickets} users={users} setActiveTab={setActiveTab} />
                     </nav>
-                </div>
-            </div>
-        )}
+                </aside>
 
-        <div className="flex">
-            {/* Sidebar (desktop) */}
-            <aside className="hidden lg:block w-64 bg-white shadow-lg min-h-screen p-6">
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-gray-800">Gestion Invitations</h2>
-                    <p className="text-gray-600 text-sm">Soirée de Gala 2026</p>
-                </div>
-                <nav className="space-y-2">
-                    <SidebarLinks activeTab={activeTab} tickets={tickets} users={users} setActiveTab={setActiveTab} />
-                </nav>
-            </aside>
-
-            {/* Contenu principal */}
-            <main className="flex-1 p-4 md:p-6">
-                {/* Header */}
-                <header className="mb-6">
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center">
-                            <button
-                                onClick={() => setSidebarOpen(true)}
-                                className="lg:hidden p-2 mr-3 rounded-lg hover:bg-gray-100"
-                            >
-                                <Menu size={24} />
-                            </button>
-                            <div>
-                                <h1 className="text-2xl font-bold text-gray-800">
-                                    {activeTab === 'overview' ? 'Tableau de Bord' :
-                                        activeTab === 'users' ? 'Gestion des Invités' :
-                                            activeTab === 'tickets' ? 'Gestion des Tickets' :
-                                                'Statistiques'}
-                                </h1>
-                                <p className="text-gray-600">Soirée de Gala - 03/01/2026</p>
+                {/* Contenu principal */}
+                <main className="flex-1 p-4 md:p-6">
+                    {/* Header */}
+                    <header className="mb-6">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 mr-3 rounded-lg hover:bg-gray-100"
+                                >
+                                    <Menu size={24} />
+                                </button>
+                                <div>
+                                    <h1 className="text-2xl font-bold text-gray-800">
+                                        {activeTab === 'overview' ? 'Tableau de Bord' :
+                                            activeTab === 'users' ? 'Gestion des Invités' :
+                                                activeTab === 'tickets' ? 'Gestion des Tickets' :
+                                                    'Statistiques'}
+                                    </h1>
+                                    <p className="text-gray-600">Soirée de Gala - 03/01/2026</p>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* <div className="flex items-center space-x-3">
+                            {/* <div className="flex items-center space-x-3">
                             <button
                                 onClick={exportData}
                                 className="hidden sm:flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-shadow"
@@ -191,71 +202,78 @@ const Home = () => {
                                 <RefreshCw size={20} />
                             </button>
                         </div> */}
-                    </div>
-                </header>
+                        </div>
+                    </header>
 
-                {/* Barre de recherche et filtres */}
-                {
-                    activeTab === 'tickets' || activeTab === 'users'
-                        ?
-                        <div className="bg-white rounded-xl shadow p-4 mb-6">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-
-
-                                <div className="flex flex-wrap gap-3">
+                    {/* Barre de recherche et filtres */}
+                    {
+                        activeTab === 'tickets' || activeTab === 'users'
+                            ?
+                            <div className="bg-white rounded-xl shadow p-4 mb-6">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
 
-                                    {activeTab === 'users' && (
-                                        <button
-                                            onClick={() => setShowAddUserModal(true)}
-                                            className="flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:shadow-lg"
-                                        >
-                                            <UserPlus size={18} className="mr-2" />
-                                            Ajouter un membre
-                                        </button>
-                                    )}
+                                    <div className="flex flex-wrap gap-3">
 
 
+                                        {activeTab === 'users' && (
+                                            <button
+                                                onClick={() => setShowAddUserModal(true)}
+                                                className="flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:shadow-lg"
+                                            >
+                                                <UserPlus size={18} className="mr-2" />
+                                                Ajouter un membre
+                                            </button>
+                                        )}
+
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        : null
-                }
+                            : null
+                    }
 
-                {/* Contenu selon l'onglet actif */}
-                {activeTab === 'overview' ? (
-                    <OverviewTab
-                        totalInvitesConfirmes={totalInvitesConfirmes}
-                        totalInvites={totalInvites}
-                        totalUsers={totalUsers}
-                        confirmedUsers={confirmedUsers}
-                        totalTickets={totalTickets}
-                        usedTickets={usedTickets}
-                        pendingTickets={pendingTickets}
-                        users={users}
-                        tickets={tickets}
-                    />
-                ) : (
-                    <UsersTab
-                        filteredUsers={filteredUsers}
-                        toggleUserConfirmation={toggleUserConfirmation}
-                        users={users}
-                    />
-                )}
-            </main>
+                    {/* Contenu selon l'onglet actif */}
+                    {activeTab === 'overview' ? (
+                        <OverviewTab
+                            totalInvitesConfirmes={totalInvitesConfirmes}
+                            totalInvites={totalInvites}
+                            totalUsers={totalUsers}
+                            confirmedUsers={confirmedUsers}
+                            totalTickets={totalTickets}
+                            usedTickets={usedTickets}
+                            pendingTickets={pendingTickets}
+                            users={users}
+                            tickets={tickets}
+                        />
+                    ) : (
+                        <UsersTab
+                            filteredUsers={filteredUsers}
+                            toggleUserConfirmation={toggleUserConfirmation}
+                            users={users}
+                        />
+                    )}
+                </main>
+            </div>
+
+            {/* Modals */}
+            {showAddUserModal && (
+                <AddUserModal
+                    newUser={newUser}
+                    setNewUser={setNewUser}
+                    handleAddUser={handleAddUser}
+                    setShowAddUserModal={setShowAddUserModal}
+                />
+            )}
+
         </div>
-
-        {/* Modals */}
-        {showAddUserModal && (
-            <AddUserModal
-                newUser={newUser}
-                setNewUser={setNewUser}
-                handleAddUser={handleAddUser}
-                setShowAddUserModal={setShowAddUserModal}
-            />
-        )}
-
-    </div>
+        : <div className='h-screen flex'>
+            <form onSubmit={handleSubmit} className='flex flex-col my-auto mx-auto bg-gray-50/50 shadow-md shadow-gray-500 p-20 rounded gap-4'>
+                <span className='text-center uppercase font-bold'>Identification</span>
+                <input onChange={e => setEnteredCode(e.target.value)} type="text" placeholder="Merci de rentrer le code" className='px-2 py-2 border border-gray-200 rounded' />
+                <input type="submit" value="Se connecter" className='bg-green-100 text-green-900 font-bold p-2 rounded hover:bg-green-200 hover:text-green-700 hover:cursor-pointer' />
+            </form>
+        </div>
 
 
     // return <>Access interdit</>
