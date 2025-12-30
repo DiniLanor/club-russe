@@ -149,7 +149,7 @@ const InviationCardGuest = () => {
                                     onClick={toggleFlip}
                                     className="px-6 mb-5 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
                                 >
-                                    {isFlipped ? "Voir l'invitation" : "Confirmer présence"}
+                                    {isFlipped ? "Voir l'invitation" : "Formulaire de confirmation"}
                                 </button>
                             </div>
                         </div>
