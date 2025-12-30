@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.100.110:8088/api';
+// const BASE_URL = 'http://192.168.100.110:8088/api';
+const BASE_URL = 'https://club-russe-api.vercel.app/api';
 
 const path = {
     createGuest: () => `/ticket`,

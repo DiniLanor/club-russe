@@ -48,7 +48,7 @@ const InviationCardGuest = () => {
                 {/* Titre de l'événement */}
                 <div className="text-center mb-6">
                     <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-700 to-black bg-clip-text text-transparent mb-2">
-                        Invitation Officiel
+                        Invitation Officielle
                     </h1>
                 </div>
 
@@ -69,6 +69,9 @@ const InviationCardGuest = () => {
                                 <div className="text-center flex-1 z-10">
                                     <div className="text-xl font-bold">2-0</div>
                                 </div>
+                                <div className="text-center flex-1 z-10">
+                                    <div className="text-xl font-bold">CLUB RUSSE</div>
+                                </div>
                                 <div className="mx-4 z-10">
                                     <div className="w-40 h-40 rounded-full bg-white/5 flex items-center justify-center">
                                         <img src={logo} alt="logo" />
@@ -79,11 +82,12 @@ const InviationCardGuest = () => {
                         </div>
 
                         {/* Contenu principal */}
-                        <div className="px-6">
+                        <div className="px-6 italic">
                             {/* Titre de l'événement */}
                             <div className="mb-6 text-center">
-                                <h2 className="text-xl font-bold text-gray-800 mb-2">Soirée de Gala de Clôture Annuelle</h2>
-                                <p className="text-gray-600 text-sm italic">"Élégance & Réussite"</p>
+                                <h2 className="text-xl font-bold text-gray-800 mb-2">Vous convie à sa soirée de Gala de Clôture Annuelle</h2>
+                                <p className="text-gray-600 text-sm italic">sous le thème:</p>
+                                <p className="text-gray-600 text-sm italic">"Élégance & Réussite - Le Spectacle Continue - Nuit Étoilée"</p>
                             </div>
 
                             {/* Message d'invitation */}
@@ -116,7 +120,7 @@ const InviationCardGuest = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center flex-col">
+                                {/* <div className="flex items-center flex-col">
                                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
                                         <span className="text-indigo-700">🎭</span>
                                     </div>
@@ -124,7 +128,7 @@ const InviationCardGuest = () => {
                                         <h3 className="font-semibold text-gray-800">Thème</h3>
                                         <p className="text-gray-700">Élégance & Réussite / Le Spectacle Continue / Nuit Étoilée</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* Programme */}
