@@ -363,10 +363,10 @@ const OverviewTab = ({
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">Derniers invités</h3>
                     <h3 className="text-lg font-semibold text-gray-800">Personnes Invitées</h3>
-                    <button className="text-blue-600 text-sm font-medium">Voir tout</button>
+                    {/* <button className="text-blue-600 text-sm font-medium">Voir tout</button>*/} 
                 </div>
-                <div className="space-y-3">
-                    {users.slice(0, 5).map(user => (
+                <div className="space-y-3 overflow-y">
+                    {users.map(user => (
                         <div key={user._id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
                             <div className="flex items-center">
                                 <div className={`w-3 h-3 rounded-full mr-3 ${user.confirmInvitation ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
